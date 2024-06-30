@@ -1,0 +1,47 @@
+{% extends "base_template.html" %}
+
+{% block title %}
+    <title>Create Flower</title>
+{% endblock %}
+
+{% block content %}
+    <h1>Create Flower</h1>
+
+    <form action="{{ url_for('store') }}" method="post">
+        <div class="mb-3">
+            <label for="flower_name" class="form-label">Flower Name</label>
+            <input type="text" class="form-control" name="flower_name" id="flower_name" placeholder="your flower name" required>
+        </div>
+        
+        <div class="mb-3">
+            <label for="lat_num" class="form-label">Latitude Number</label>
+            <input type="number" class="form-control" name="lat_num" id="lat_num" 
+            step="0.000001" value="0.000001">
+        </div>
+        
+        <div class="mb-3">
+            <label for="long_num" class="form-label">Longitude Number</label>
+            <input type="number" class="form-control" name="long_num" id="long_num" step="0.000001" value="0.000001">
+        </div>
+
+        <div class="mb-3">
+            <label for="place" class="form-label">Place</label>
+            <select class="form-control" name="place" id="place">
+                <option value="land">Land</option>
+                <option value="forest" selected>Forest</option>
+                <option value="sea">Sea</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="detail" class="form-label">Detail</label>
+            <textarea class="form-control" name="detail" id="detail" rows="5"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+        </div>
+
+    </form>
+{% endblock %}
