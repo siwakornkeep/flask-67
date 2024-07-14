@@ -4,7 +4,7 @@ import mysql.connector
 app = Flask(__name__)
 
 # For form
-app.config['SECRET_KEY'] = ''
+app.config['SECRET_KEY'] = 'ufufofuouousoiduspppr'
 
 # For DB
 db_host = "localhost" 
@@ -27,7 +27,7 @@ def create():
 @app.route("/store", methods=["POST"])
 def store():
 
-    # from flask import flask, render_template, request, redirect, session
+    # from flask import flask, render_template, request, redirect, session ,
 
     if request.method == "POST":
         flower_name = request.form['flower_name']
@@ -97,10 +97,10 @@ def index():
 def edit(flower_id):
     # Connect Database
     my_db = mysql.connector.connect(
-            host = db_host,
-            user = db_user,
-            password = db_pass,
-            db = db_name
+        host = db_host,
+        user = db_user,
+        password = db_pass,
+        db = db_name
         )
     my_cursor = my_db.cursor(dictionary=True)
     sql = "SELECT * FROM flowers WHERE id = " + flower_id
@@ -109,14 +109,14 @@ def edit(flower_id):
     return render_template("edit.html", results = results)
 
 @app.route("/updete/<flower_id>", methods=["POST"])
-def update():
+def update(flower_id):
     if request.methods == "POST":
         flower_name = request.form['flower_name']
         lat_num = request.form['lat_num']
         long_num = request.form['long_num']
         place = request.form['place']
         detail = request.form['detail']
-        print(flower_name, lat_num, long_num, place, detail)
+        print(flower_name, lat_num, long_num, place, detail, flower_id)
 
         # Connect Database
         my_db = mysql.connector.connect(
@@ -132,10 +132,39 @@ def update():
             lat_num = %s,
             long_num = %s,
             place = %s,
-            detail = %s,
-            WHERE id = %d
+            detail = %s
+            WHERE id = %s
             """
-    return redirect("/")
+        val = (flower_name, lat_num, long_num, detail)
+        my_cursor.execute(sql, val)
+        my_db.commit()
+
+        session['alert_status'] = "success"
+        session['alert_messge'] = "Already Created!"
+        return redirect('/')
+    else:
+        session['alert_status'] = "fail"
+        session['alert_message'] = "Something went wrong!"
+        return redirect('/')
+    
+@app.route("/delete/<flower_id>", methods=['GET'])
+def delete(flower_id):
+    # Connect Database
+    my_db = mysql.connector.connect(
+        host = db_host,
+        user = db_user,
+        password = db_pass,
+        db = db_name
+    )
+    my_cursor = my_db.cursor(dictionary=True)
+    sql = "DELETE FROM flowers WHERE id = %s"
+    val = (flower_id,)
+    my_cursor.execute(sql, val)
+    my_db.commit()
+
+    session['alert_status'] = "success"
+    session['alert_messge'] = "Already Created!"
+    return redirect('/')
 
 if __name__ == "__main__":
     app.run(debug=True)

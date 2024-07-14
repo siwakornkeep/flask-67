@@ -5,7 +5,7 @@
     {% endblock %}
 
 {% block content %}
-    <h1>Floer List</h1>
+    <h1>Flower List</h1>
 
     {% if alert_message.status == "success" %}
         <div class="alert alert-success" role="alert">
@@ -34,7 +34,11 @@
                 <td>{{ result.flower_name7 }}</td>
                 <td>{{ result.lat_num }}, {{ result.long_num}}</td>
                 <td>{{ result.place }}</td>
-                <td><a href="{{ url_for('edit', flower_id= result.id) }}" class="btn btn-info">Edit</a></td>
+                <td>
+                    <a href="{{ url_for('edit', flower_id= result.id) }}" class="btn btn-info">Edit</a>
+                    &nbsp;
+                    <a href="{{ url_for('delete', flower_id= result.id) }}" class="btn btn-danger ">Delete</a>
+                </td>
             </tr>
         {% endfor %}
         </tbody>
